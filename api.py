@@ -125,13 +125,22 @@ class Coda(object):
         if not method.endswith('/'):
             method += '/'
         params = {}
-        # Encode argument values as JSON
+        # print "Calling %s with kwargs %s" % (method, kwargs)
+        # Encode complex argument values as JSON - should really be recursive, I guess?
+        # API Marshalling guide just says that dicts and lists should be in JSON format
+        # but what about basic types within those?
         for k in kwargs:
-            params[k] = json.dumps(kwargs[k])
+            v = kwargs[k]
+            if isinstance(k, dict) or isinstance(k, list):
+                params[k] = json.dumps(kwargs[k])
+            else:
+                params[k] = kwargs[k]
         url = self.get_url(method, params)
-        # print "Calling %s with params %s" % (method, params)
+        #print "Calling %s with params %s" % (method, params)
         response = urllib2.urlopen(url, urllib.urlencode(params))
-        result = json.loads(response.read())
+        data = response.read()
+        #print data
+        result = json.loads(data)
         if result['result'] == 'OK':
             return result.get('response', None)
         else:
