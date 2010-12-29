@@ -24,13 +24,19 @@
 #    c = s.get_coda(atok)
 #    print c.getDisplays()
 #
+# Note that, unlike normal Python calls, if you're passing arguments you must use keyword arguments 
+# because the keywords get turned into parameter names.   In other words:
+#    c.removeUser(user_uuid='xxxxxxxxx')
+# will work but
+#    c.removeUser('xxxxxxxxx')
+# will not, even though the call only takes one parameter.
 
 CODA_SERVER_URL = 'https://api.codaview.com' # Note no trailing slashe
 API_RELATIVE_URL = "external/v2/json/"  # Note trailing slash
 
 import os
 import oauth
-import urllib2
+import urllib, urllib2
 import sys
 
 # Find a simplejson library somewhere!
@@ -109,15 +115,22 @@ class Coda(object):
     def get_url(self, method, parameters={}):
         oauth_request = oauth.OAuthRequest.from_consumer_and_token(self.consumer,
                                                                    token=self.access_token,
+                                                                   http_method='POST',
                                                                    http_url=self.api_url + method,
                                                                    parameters=parameters)
         oauth_request.sign_request(oauth.OAuthSignatureMethod_HMAC_SHA1(), self.consumer, self.access_token)
         return oauth_request.to_url()
     
-    def callMethod(self, method, **args):
+    def callMethod(self, method, **kwargs):
         if not method.endswith('/'):
             method += '/'
-        response = urllib2.urlopen(self.get_url(method, args))
+        params = {}
+        # Encode argument values as JSON
+        for k in kwargs:
+            params[k] = json.dumps(kwargs[k])
+        url = self.get_url(method, params)
+        # print "Calling %s with params %s" % (method, params)
+        response = urllib2.urlopen(url, urllib.urlencode(params))
         result = json.loads(response.read())
         if result['result'] == 'OK':
             return result.get('response', None)
