@@ -53,7 +53,7 @@ class CodaServer(object):
         self.server_url = server_url
         self.consumer = oauth.OAuthConsumer(consumer_key, consumer_secret)
     
-    def get_auth(self):
+    def get_auth(self, callback=None):
         """
         Return an auth token and a URL that the user needs to visit to authorise the request
         """
@@ -68,11 +68,13 @@ class CodaServer(object):
         request_token = oauth.OAuthToken.from_string(request_token_string)
 
         # Authentication request
+        params = {}
+        if callback: params['oauth_callback']=callback
         oauth_request = oauth.OAuthRequest.from_consumer_and_token(
             self.consumer,
             token=request_token,
             http_url='%s/oauth/authorize/' % self.server_url,
-            parameters={})
+            parameters=params)
         oauth_request.sign_request(oauth.OAuthSignatureMethod_HMAC_SHA1(), self.consumer, request_token)
 
         return (request_token_string, oauth_request.to_url())
@@ -86,8 +88,12 @@ class CodaServer(object):
                                                                    parameters={})
         
         oauth_request.sign_request(oauth.OAuthSignatureMethod_HMAC_SHA1(), self.consumer, request_token)
-        response = urllib2.urlopen(oauth_request.to_url())
-        access_token_string=response.read()
+        try:
+            response = urllib2.urlopen(oauth_request.to_url())
+            access_token_string=response.read()
+        except urllib2.HTTPError, e:
+            # print "CODA server said %s: %s" % (e.code, e.msg)
+            raise CodaException("CODA server said %s: %s" % (e.code, e.msg))
         return access_token_string
             
     def get_coda(self, access_token):
