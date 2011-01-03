@@ -118,34 +118,30 @@ class Coda(object):
         self.consumer = consumer
         self.access_token = oauth.OAuthToken.from_string(access_token_string)
 
-    def get_url(self, method, parameters={}):
+    def get_url_and_postdata(self, method, parameters={}):
         oauth_request = oauth.OAuthRequest.from_consumer_and_token(self.consumer,
                                                                    token=self.access_token,
                                                                    http_method='POST',
                                                                    http_url=self.api_url + method,
                                                                    parameters=parameters)
         oauth_request.sign_request(oauth.OAuthSignatureMethod_HMAC_SHA1(), self.consumer, self.access_token)
-        return oauth_request.to_url()
+        return oauth_request.get_normalized_http_url(), oauth_request.to_postdata()
     
     def callMethod(self, method, **kwargs):
         if not method.endswith('/'):
             method += '/'
         params = {}
         # print "Calling %s with kwargs %s" % (method, kwargs)
-        # Encode complex argument values as JSON - should really be recursive, I guess?
         # API Marshalling guide just says that dicts and lists should be in JSON format
-        # but what about basic types within those?
         for k in kwargs:
             v = kwargs[k]
             if isinstance(k, dict) or isinstance(k, list):
                 params[k] = json.dumps(kwargs[k])
             else:
                 params[k] = kwargs[k]
-        url = self.get_url(method, params)
-        #print "Calling %s with params %s" % (method, params)
-        response = urllib2.urlopen(url, urllib.urlencode(params))
+        url, postdata = self.get_url_and_postdata(method, params)
+        response = urllib2.urlopen(url, postdata)
         data = response.read()
-        #print data
         result = json.loads(data)
         if result['result'] == 'OK':
             return result.get('response', None)
