@@ -135,10 +135,10 @@ class Coda(object):
         # API Marshalling guide just says that dicts and lists should be in JSON format
         for k in kwargs:
             v = kwargs[k]
-            if isinstance(k, dict) or isinstance(k, list):
-                params[k] = json.dumps(kwargs[k])
+            if isinstance(v, dict) or isinstance(v, list):
+                params[k] = json.dumps(v)
             else:
-                params[k] = kwargs[k]
+                params[k] = v
         url, postdata = self.get_url_and_postdata(method, params)
         response = urllib2.urlopen(url, postdata)
         data = response.read()

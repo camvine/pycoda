@@ -97,10 +97,10 @@ class AuthTestCase(unittest.TestCase):
         # Search for multiple sources (just one for now!)
         # XXX This may not be live on the server yet!
         #
-        #srch_src = self.coda.getSources(source_uuids=[new_source_uuid])
+        srch_src = self.coda.getSources(source_uuids=[new_source_uuid])
         # Check there's only one and it has the right uuid
-        #self.assertEqual(len(srch_src), 1)
-        #self.assertEqual(new_source_uuid, srch_src[0]['source_uuid'])
+        self.assertEqual(len(srch_src), 1)
+        self.assertEqual(new_source_uuid, srch_src[0]['source_uuid'])
         
         # The delete it and check it's gone
         self.coda.removeSource(source_uuid=new_source_uuid)
