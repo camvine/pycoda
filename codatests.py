@@ -57,6 +57,11 @@ class AuthTestCase(unittest.TestCase):
         # Check an invalid auth
         self.assertRaises(api.CodaException, lambda: self.codaserver.get_access_token("oauth_token_secret=randomstring&oauth_token=anotherstring"))
 
+    def testGetUser(self):
+        resp = self.coda.getUser()
+        self.assertTrue(resp.has_key('user_uuid'))
+        self.assertTrue(resp.has_key('username'))
+
     def testGetOrganisation(self):
         resp = self.coda.getOrganisation()
         self.assertTrue(resp.has_key('name'))
