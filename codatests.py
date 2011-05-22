@@ -41,7 +41,7 @@ class AuthTestCase(unittest.TestCase):
             tf.close()
         if not self.atok:
             (rtok, url) = self.codaserver.get_auth()
-            print "Opening web browser to confirm authentication request\nat %s - please approve and then press return here" % url
+            print "Opening web browser to confirm authentication request\nat %s\nPlease approve and then press return here" % url
             import webbrowser
             webbrowser.open(url)
             sys.stdin.readline()
@@ -85,7 +85,14 @@ class AuthTestCase(unittest.TestCase):
             type_uuid = '3c554dfe-f094-5f7e-0013-000000000010', # an HTML page
             parameters = json.dumps({'url':"http://news.google.com"}))
         new_source_uuid = resp['source_uuid']
+        # Check we can read both that single UUID...
         resp = self.coda.getSources(source_uuid=new_source_uuid)
+        self.assertEqual(new_source_uuid, resp[0]['source_uuid'])
+        # and a list containing just that uuid
+        resp = self.coda.getSources(source_uuids=[new_source_uuid])
+        self.assertEqual(len(resp), 1)
+        self.assertEqual(new_source_uuid, resp[0]['source_uuid'])
+
         new_sources = self.coda.getSources()
         self.assertEqual(len(new_sources), len(orig_sources)+1, "Count of sources didn't change after adding one")
         # Search for sources with this name
