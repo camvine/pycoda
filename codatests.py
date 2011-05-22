@@ -57,6 +57,11 @@ class AuthTestCase(unittest.TestCase):
         # Check an invalid auth
         self.assertRaises(api.CodaException, lambda: self.codaserver.get_access_token("oauth_token_secret=randomstring&oauth_token=anotherstring"))
 
+    def testGetUser(self):
+        resp = self.coda.getUser()
+        self.assertTrue(resp.has_key('user_uuid'))
+        self.assertTrue(resp.has_key('username'))
+
     def testGetOrganisation(self):
         resp = self.coda.getOrganisation()
         self.assertTrue(resp.has_key('name'))
@@ -104,10 +109,10 @@ class AuthTestCase(unittest.TestCase):
         # Search for multiple sources (just one for now!)
         # XXX This may not be live on the server yet!
         #
-        #srch_src = self.coda.getSources(source_uuids=[new_source_uuid])
+        srch_src = self.coda.getSources(source_uuids=[new_source_uuid])
         # Check there's only one and it has the right uuid
-        #self.assertEqual(len(srch_src), 1)
-        #self.assertEqual(new_source_uuid, srch_src[0]['source_uuid'])
+        self.assertEqual(len(srch_src), 1)
+        self.assertEqual(new_source_uuid, srch_src[0]['source_uuid'])
         
         # The delete it and check it's gone
         self.coda.removeSource(source_uuid=new_source_uuid)
