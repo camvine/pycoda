@@ -13,6 +13,7 @@
 import unittest
 import api
 import os, sys, webbrowser, urllib2, time
+import random
 
 TEST_KEY = 'c1361963e1c2475f'
 TEST_SECRET = '2cec36b84c7811c2'
@@ -36,7 +37,7 @@ class AuthTestCase(unittest.TestCase):
         self.atok = None
         if os.path.isfile(TOKEN_FILENAME):
             tf = open(TOKEN_FILENAME, 'r')
-            print "Loading auth token from %s" % TOKEN_FILENAME
+            print "\nLoading auth token from %s" % TOKEN_FILENAME
             self.atok = json.load(tf)
             tf.close()
         if not self.atok:
@@ -82,8 +83,37 @@ class AuthTestCase(unittest.TestCase):
         new_users = self.coda.getUsers()
         self.assertEqual(len(new_users), len(orig_users))
 
+    def testDisplays(self):
+        """List display, and try a simple modification on one"""
+        displays = self.coda.getDisplays()
+        # Pick a display at random
+        disp = random.choice(displays)
+        uuid = disp['display_uuid']
+        
+        # Add a new tag - not the most exciting test, I know, but we're using live displays here
+        tags = disp['tags']
+        num_tags = len(tags)
+        new_tag = "test_tag_%d" % random.randint(0, 314156)
+        self.coda.modifyDisplay(display_uuid = uuid, tags=tags+[new_tag])
+        
+        # Read the info again and check it's there
+        new_disp_info = self.coda.getDisplays(display_uuid = uuid)
+        new_tags = new_disp_info[0]['tags']
+        self.assertEqual(len(new_tags), num_tags+1)
+        self.assertTrue(new_tag in new_tags)
+        
+        # Remove it and check it's gone.
+        new_tags.remove(new_tag)
+        self.coda.modifyDisplay(display_uuid = uuid, tags=new_tags)
+        final_disp_info = self.coda.getDisplays(display_uuid = uuid)
+        final_tags = new_disp_info[0]['tags']
+        self.assertEqual(len(final_tags), num_tags)
+        self.assertTrue(new_tag not in new_tags)
+    
+
+        
     def testSources(self):
-        """List users, create and delete a source"""
+        """List sources, create and delete a source"""
         orig_sources = self.coda.getSources()
         new_source_name = 'test_src_' + str(int(time.time()))
         resp = self.coda.createSource(name=new_source_name, 
