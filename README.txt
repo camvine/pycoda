@@ -24,12 +24,12 @@ through this, the rest is easy!
 Let's get started. You can try this stuff out at the Python prompt, if wanted: just
 start up Python in the directory which contains pycoda as a subdirectory.
 
-First, you'll need a Consumer Key and Secret for your particular application.
+First, you'll need a Consumer Key and Secret for your particular application.  (Your application will be a 'consumer' of the API - hence the name.)
 You can create these by going to:
 
   https://www.codaview.com/gui/developer/
 
-and hard-code them into your app.
+adding a new application, and it'll then have an associated 'OAuth Key' and 'OAuth Secret'. You can copy these and hard-code them into your app.
 
 Your app can then identify itself to the Coda server:
 
