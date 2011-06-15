@@ -126,6 +126,13 @@ The token file should simply contain an auth token in JSON string format: typica
 
 "oauth_token_secret=h2Je4chGHwXXYXaD8&oauth_token=LZUaj3UuwB8u9TYH"
 
+Acknowledgements
+----------------
+
+The oauth.py file, by Leah Culver, is from the Google Code project at
+ http://code.google.com/p/oauth/
+
 
                             Quentin Stafford-Fraser
                             quentin@camvine.com
+
