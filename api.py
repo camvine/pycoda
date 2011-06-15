@@ -1,35 +1,11 @@
 #! /usr/bin/python
 #
-# A front end to the CODA API.
-# For more information, see http://support.camvine.com/kb/api/
+# A simple front end to the CODA API.
+# For more information about the API, see http://support.camvine.com/kb/api/
+# For examples on how to use this, see README.txt.
 #
-# Copyright 2010 Cambridge Visual Networks Ltd - Quentin Stafford-Fraser
-
-# Example use:
-#    CONSUMER_KEY = '50d83d409d7745d0'
-#    CONSUMER_SECRET = '564a288948ba25b0'
-#    from pycoda.api import CodaServer
-#    s = CodaServer(CONSUMER_KEY, CONSUMER_SECRET)
+# Copyright 2011 Cambridge Visual Networks Ltd - Quentin Stafford-Fraser
 #
-# If you don't have an access token, do this:
-#    (rtok, url) = s.get_auth()
-# When user has visited url and approved the request, you can get the access token:
-#    atok = s.get_access_token(rtok)
-# which can be stored somewhere.
-#
-# An access token atok will look something like: 
-#    "oauth_token_secret=8rGSdemBs2zne2yV&oauth_token=8a8u79TUnbWKs3Bp" 
-#
-# Then get a Coda object from the server:
-#    c = s.get_coda(atok)
-#    print c.getDisplays()
-#
-# Note that, unlike normal Python calls, if you're passing arguments you must use keyword arguments 
-# because the keywords get turned into parameter names.   In other words:
-#    c.removeUser(user_uuid='xxxxxxxxx')
-# will work but
-#    c.removeUser('xxxxxxxxx')
-# will not, even though the call only takes one parameter.
 
 CODA_SERVER_URL = 'https://api.codaview.com' # Note no trailing slashe
 API_RELATIVE_URL = "external/v2/json/"  # Note trailing slash

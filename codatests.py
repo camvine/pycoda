@@ -14,6 +14,10 @@ import unittest
 import api
 import os, sys, webbrowser, urllib2, time
 
+# Please create new test keys yourself and replace these. See api.py for info.
+# You CERTAINLY SHOULD NOT use these for any real application.
+# They may be disabled at any time.
+
 TEST_KEY = 'c1361963e1c2475f'
 TEST_SECRET = '2cec36b84c7811c2'
 TOKEN_FILENAME = 'codatests.tok'
