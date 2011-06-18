@@ -8,8 +8,7 @@ For documentation of the API itself, see http://support.camvine.com/kb/api/
 How to use
 ----------
 
-An application needs to authenticate itself with CODA using the OAuth standard -
-this involves two parts:
+An application needs to authenticate itself with CODA using the OAuth standard - this involves two parts:
 
 * First, it needs to be using a valid Consumer Key and Secret which 
   identifies the app.
@@ -17,12 +16,9 @@ this involves two parts:
 * Second, it needs an Access Token which represents its authority to 
   act on behalf of a particular user in a particular organisation.
 
-Because of this, the most complex bits happen at the beginning and are to do with
-authentication. This is a pity, but we'll show you the steps, and once you've got
-through this, the rest is easy!
+Because of this, the most complex bits happen at the beginning and are to do with authentication. This is a pity, but we'll show you the steps, and once you've got through this, the rest is easy!
 
-Let's get started. You can try this stuff out at the Python prompt, if wanted: just
-start up Python in the directory which contains pycoda as a subdirectory.
+Let's get started. You can try this stuff out at the Python prompt, if wanted: just start up Python in the directory which contains pycoda as a subdirectory.
 
 First, you'll need a Consumer Key and Secret for your particular application.  (Your application will be a 'consumer' of the API - hence the name.)
 You can create these by going to:
@@ -38,18 +34,15 @@ Your app can then identify itself to the Coda server:
    from pycoda.api import CodaServer
    s = CodaServer(CONSUMER_KEY, CONSUMER_SECRET)
 
-Now, when a particular user runs your application, it will need an 'access token', 
-which represents the app's authority to connect to CODA and pretend to be that user.
+Now, when a particular user runs your application, it will need an 'access token', which represents the app's authority to connect to CODA and pretend to be that user.
 
 If you don't have an access token for the user, you need to do this:
 
    (rtok, url) = s.get_auth()
 
-Then the user should go to the resulting url and grant access to their account,  
-just as they would with a Flickr, Facebook or Twitter app. 
+Then the user should go to the resulting url and grant access to their account,  just as they would with a Flickr, Facebook or Twitter app. 
 
-Once the user has visited the url and approved the request, you can get the
-access token:
+Once the user has visited the url and approved the request, you can get the access token:
 
    atok = s.get_access_token(rtok)
 
@@ -58,8 +51,7 @@ atok will look something like this:
   "oauth_token_secret=8rGSdemBs2zne2yV&oauth_token=8a8u79TUnbWKs3Bp"
 
 and you should store it somewhere - in a file, in a database, wherever is
-appropriate for the particular app. The user won't then have to go and authorise on
-the website next time around.
+appropriate for the particular app. The user won't then have to go and authorise on the website next time around.
 
 
 OK - that's the complicated stuff.  It wasn't too hard, was it? 
@@ -81,11 +73,9 @@ And print the first one.
 
    print srcs[0]
 
-Almost all objects in CODA have a unique identifier or 'UUID', which looks
-something like this: 3c554dfe-f094-5f7e-0010-000000006c43
+Almost all objects in CODA have a unique identifier or 'UUID', which looks something like this: 3c554dfe-f094-5f7e-0010-000000006c43
 
-That's what you use to refer to the item, be it a source or display, in other
-calls. You'll see parameters called source_uuid, display_uuid etc.
+That's what you use to refer to the item, be it a source or display, in other calls. You'll see parameters called source_uuid, display_uuid etc.
 
 Let's get the UUID of this source:
 
@@ -95,13 +85,9 @@ If you want to put a particular source on a particular display, you say:
 
    c.assignSource(source_uuid=su, display_uuids=[ du ])
 
-where su and du are the source_uuid and display_uuid required. Note that the
-display_uuids parameter is a list, because you can specify more than one if you
-want to assign the same source to multiple displays simultaneously.
+where su and du are the source_uuid and display_uuid required. Note that the display_uuids parameter is a list, because you can specify more than one if you want to assign the same source to multiple displays simultaneously.
 
-Note that, unlike normal Python calls, if you're passing arguments to calls
-you *must* use keyword arguments because the keywords get turned automatically 
-into the parameter names.   In other words:
+Note that, unlike normal Python calls, if you're passing arguments to calls you *must* use keyword arguments because the keywords get turned automatically  into the parameter names.   In other words:
 
    c.removeUser(user_uuid='xxxxxxxxx')
 
