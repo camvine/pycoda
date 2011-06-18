@@ -118,6 +118,11 @@ Acknowledgements
 The oauth.py file, by Leah Culver, is from the Google Code project at
  http://code.google.com/p/oauth/
 
+Licensing
+---------
+The pycoda library is released under the GNU General Public License v2.
+See COPYRIGHT.txt and LICENSE.txt for more details.
+
 
                             Quentin Stafford-Fraser
                             quentin@camvine.com

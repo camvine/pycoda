@@ -5,7 +5,9 @@
 # For examples on how to use this, see README.txt.
 #
 # Copyright 2011 Cambridge Visual Networks Ltd - Quentin Stafford-Fraser
-#
+# 
+# This code is released under the GNU General Public License v2.
+# See COPYRIGHT.txt and LICENSE.txt.
 
 CODA_SERVER_URL = 'https://api.codaview.com' # Note no trailing slashe
 API_RELATIVE_URL = "external/v2/json/"  # Note trailing slash

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 # =================================
-# = Simple unit tests for pycoda =
+# = Simple unit tests for pycoda  =
 # =================================
 #
 # These will store/use an authentication token in codatests.tok in the current directory.
@@ -9,6 +9,9 @@
 #  
 # Some tests may fail if the organisation's account is in active use, and data on server is changing 
 # while these tests are being performed.  Should be otherwise harmless, though.
+# 
+# This code is released under the GNU General Public License v2.
+# See COPYRIGHT.txt and LICENSE.txt.
 
 import unittest
 import api
